@@ -1,6 +1,8 @@
+
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Linq;
+
 using AAEmu.Commons.Utils;
 using AAEmu.Game.Core.Network.Connections;
 using NLog;
@@ -11,12 +13,14 @@ namespace AAEmu.Game.Core.Managers
     {
         private static Logger _log = LogManager.GetCurrentClassLogger();
 
-        private ConcurrentDictionary<uint, GameConnection> _accounts;
+        private ConcurrentDictionary<ulong, GameConnection> _accounts;
 
         public AccountManager()
         {
+
             _accounts = new ConcurrentDictionary<uint, GameConnection>();
             TickManager.Instance.OnTick.Subscribe(RemoveDeadConnections, TimeSpan.FromSeconds(30));
+
         }
 
         public void Add(GameConnection connection)
@@ -25,6 +29,7 @@ namespace AAEmu.Game.Core.Managers
                 return;
             _accounts.TryAdd(connection.AccountId, connection);
         }
+
 
         public void RemoveDeadConnections(TimeSpan delta)
         {
@@ -37,11 +42,12 @@ namespace AAEmu.Game.Core.Managers
         }
 
         public void Remove(uint id)
+
         {
             _accounts.TryRemove(id, out _);
         }
 
-        public bool Contains(uint id)
+        public bool Contains(ulong id)
         {
             return _accounts.ContainsKey(id);
         }

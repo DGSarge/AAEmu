@@ -8,7 +8,9 @@ namespace AAEmu.Game.Core.Packets.G2C
     {
         private readonly Mate _mate;
 
+
         public SCMateSpawnedPacket(Mate mate) : base(SCOffsets.SCMateSpawnedPacket, 1)
+
         {
             _mate = mate;
         }

@@ -1,12 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using AAEmu.Commons.Utils;
 using AAEmu.Game.Core.Managers.Id;
 using AAEmu.Game.Core.Managers.World;
+
 using AAEmu.Game.GameData;
 using AAEmu.Game.Models.Game.AI.Params;
 using AAEmu.Game.Models.Game.AI.Utils;
 using AAEmu.Game.Models.Game.AI.v2.AiCharacters;
+
 using AAEmu.Game.Models.Game.Items;
 using AAEmu.Game.Models.Game.Merchant;
 using AAEmu.Game.Models.Game.Char;
@@ -28,10 +30,12 @@ namespace AAEmu.Game.Core.Managers.UnitManagers
         private Dictionary<uint, NpcTemplate> _templates;
         private Dictionary<uint, MerchantGoods> _goods;
         private Dictionary<uint, TotalCharacterCustom> _totalCharacterCustoms;
+
         private Dictionary<uint, Dictionary<uint, List<BodyPartTemplate>>> _itemBodyParts;
         private Dictionary<uint, List<uint>> _tccLookup;
         // you can provide a seed here if you want NPCs to more reliable retain their appearance between reboots, or leave out the seed to get it random every time
         private Random _loadCustomRandom = new Random(123456789);
+
 
         public bool Exist(uint templateId)
         {
@@ -79,7 +83,9 @@ namespace AAEmu.Game.Core.Managers.UnitManagers
                 var templ = LoadCustom(template);
                 template.HairId = templ.HairId;
                 template.ModelParams = templ.ModelParams;
+
                 template.BodyItems = templ.BodyItems;
+
             }
 
             SetEquipItemTemplate(npc, template.Items.Headgear, EquipmentItemSlot.Head);
@@ -285,6 +291,7 @@ namespace AAEmu.Game.Core.Managers.UnitManagers
 
             //_log.Info("Loaded npc {0} random hair {1} and hairColor {2}", template.ModelId, _template.HairId, _template.ModelParams.HairColorId);
 
+
             return _template;
         }
 
@@ -294,7 +301,9 @@ namespace AAEmu.Game.Core.Managers.UnitManagers
             _goods = new Dictionary<uint, MerchantGoods>();
             _tccLookup = new Dictionary<uint, List<uint>>();
             _totalCharacterCustoms = new Dictionary<uint, TotalCharacterCustom>();
+
             _itemBodyParts = new Dictionary<uint, Dictionary<uint, List<BodyPartTemplate>>>();
+
 
             _log.Info("Loading npc templates...");
             using (var connection = SQLite.CreateConnection())
@@ -403,6 +412,7 @@ namespace AAEmu.Game.Core.Managers.UnitManagers
                         }
                     }
 
+
                     command.CommandText = "SELECT * from npcs";
                     command.Prepare();
                     using (var sqliteDataReader = command.ExecuteReader())
@@ -429,7 +439,7 @@ namespace AAEmu.Game.Core.Managers.UnitManagers
                             template.VisibleToCreatorOnly = reader.GetBoolean("visible_to_creator_only", true);
                             template.NoExp = reader.GetBoolean("no_exp", true);
                             template.PetItemId = reader.GetInt32("pet_item_id", 0);
-                            template.BaseSkillId = reader.GetInt32("base_skill_id");
+                            template.BaseSkillId = reader.GetInt32("base_skill_id", 0);
                             template.TrackFriendship = reader.GetBoolean("track_friendship", true);
                             template.Priest = reader.GetBoolean("priest", true);
                             template.NpcTedencyId = reader.GetInt32("npc_tendency_id", 0);
@@ -602,7 +612,9 @@ namespace AAEmu.Game.Core.Managers.UnitManagers
                                 template.ModelParams.Face.NormalMapWeight = tc.FaceNormalMapWeight;
                                 template.ModelParams.Face.DecoColor = tc.DecoColor;
                                 template.ModelParams.Face.Modifier = tc.Modifier;
+
                                 // reader2.GetBytes("modifier", 0, template.ModelParams.Face.Modifier, 0, 128);
+
                             }
                             else
                             {
@@ -636,11 +648,13 @@ namespace AAEmu.Game.Core.Managers.UnitManagers
 
                                     switch (slotTypeId)
                                     {
+
                                         case (byte)EquipmentItemSlotType.Face:
                                             template.BodyItems[rbp.SlotTypeId - 23] = (rbp.ItemId, rbp.NpcOnly);
                                             break;
                                         case (byte)EquipmentItemSlotType.Hair:
                                             if (rbp.ItemId == template.HairId)
+
                                             {
                                                 template.BodyItems[rbp.SlotTypeId - 23] = (rbp.ItemId, rbp.NpcOnly);
                                             }
@@ -652,6 +666,7 @@ namespace AAEmu.Game.Core.Managers.UnitManagers
                                                 }
                                             }
 
+
                                             break;
                                         case (byte)EquipmentItemSlotType.Beard:
                                         case (byte)EquipmentItemSlotType.Body:
@@ -659,6 +674,7 @@ namespace AAEmu.Game.Core.Managers.UnitManagers
                                         case (byte)EquipmentItemSlotType.Tail:
                                             template.BodyItems[rbp.SlotTypeId - 23] = (rbp.ItemId, rbp.NpcOnly);
                                             break;
+
                                     }
                                 }
                             }

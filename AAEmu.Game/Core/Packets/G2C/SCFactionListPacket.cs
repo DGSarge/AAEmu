@@ -1,4 +1,4 @@
-using AAEmu.Commons.Network;
+﻿using AAEmu.Commons.Network;
 using AAEmu.Game.Core.Network.Game;
 using AAEmu.Game.Models.Game.Faction;
 
@@ -8,26 +8,29 @@ namespace AAEmu.Game.Core.Packets.G2C
     {
         private readonly SystemFaction[] _factions;
 
-        public SCFactionListPacket() : base(0x007, 1)
+        public SCFactionListPacket() : base(SCOffsets.SCFactionListPacket, 5)
         {
             _factions = new SystemFaction[] { };
         }
 
-        public SCFactionListPacket(SystemFaction[] factions) : base(SCOffsets.SCFactionListPacket, 1)
+        public SCFactionListPacket(SystemFaction[] factions) : base(SCOffsets.SCFactionListPacket, 5)
         {
             _factions = factions;
         }
 
-        public SCFactionListPacket(SystemFaction faction) : base(SCOffsets.SCFactionListPacket, 1)
+        public SCFactionListPacket(SystemFaction faction) : base(SCOffsets.SCFactionListPacket, 5)
         {
-            _factions = new[] {faction};
+            _factions = new[] { faction };
         }
 
         public override PacketStream Write(PacketStream stream)
         {
-            stream.Write((byte) _factions.Length);
+            // TODO in 1.2 ... 2.0 max 20
+            stream.Write((byte)_factions.Length); // count Byte
             foreach (var faction in _factions)
+            {
                 stream.Write(faction);
+            }
 
             return stream;
         }

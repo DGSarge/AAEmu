@@ -130,9 +130,11 @@ namespace AAEmu.Game.Models.Game.NPChar
         public (uint ItemId, bool NpcOnly)[] BodyItems { get; set; }
         public List<uint> Buffs { get; set; }
         public List<BonusTemplate> Bonuses { get; set; }
+
         public AiParams AiParams { get; set; }
         public Dictionary<SkillUseConditionKind, List<NpcSkill>> Skills { get; set; }
         public List<NpcPassiveBuff> PassiveBuffs { get; set; }
+
         public uint TotalCustomId { get; set; }
 
         public NpcTemplate()

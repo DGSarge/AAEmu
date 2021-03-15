@@ -10,7 +10,7 @@ namespace AAEmu.Game.Core.Packets.G2C
         private readonly float _start;
         private readonly float _end;
 
-        public SCDetailedTimeOfDayPacket(float time) : base(SCOffsets.SCDetailedTimeOfDayPacket, 1)
+        public SCDetailedTimeOfDayPacket(float time) : base(SCOffsets.SCDetailedTimeOfDayPacket, 5)
         {
             _time = time;
             _speed = 0.0016666f;
@@ -24,6 +24,7 @@ namespace AAEmu.Game.Core.Packets.G2C
             stream.Write(_speed);
             stream.Write(_start);
             stream.Write(_end);
+
             return stream;
         }
     }

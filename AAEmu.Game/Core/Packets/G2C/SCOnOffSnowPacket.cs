@@ -7,7 +7,7 @@ namespace AAEmu.Game.Core.Packets.G2C
     {
         private readonly bool _on;
 
-        public SCOnOffSnowPacket(bool @on) : base(SCOffsets.SCOnOffSnowPacket, 1)
+        public SCOnOffSnowPacket(bool @on) : base(SCOffsets.SCOnOffSnowPacket, 5)
         {
             _on = @on;
         }
@@ -15,6 +15,7 @@ namespace AAEmu.Game.Core.Packets.G2C
         public override PacketStream Write(PacketStream stream)
         {
             stream.Write(_on);
+
             return stream;
         }
     }

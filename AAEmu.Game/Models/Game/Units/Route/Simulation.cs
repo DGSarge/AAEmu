@@ -48,11 +48,11 @@ namespace AAEmu.Game.Models.Game.Units.Route
         int oldTime, chkTime;
         float oldX, oldY, oldZ;
         //*******************************************************
-        public string RecordFilesPath = @"./bin/debug/netcoreapp2.2/Data/Path/";       // путь где хранятся наши файлы
-        public string RecordFileExt = @".path";       // расширение по умолчанию
-        public string MoveFilesPath = @"./bin/debug/netcoreapp2.2/Data/Path/";         // путь где хранятся наши файлы
-        public string MoveFileExt = @".path";         // расширение по умолчанию
-        public string MoveFileName = "";         // расширение по умолчанию
+        public string RecordFilesPath = @"./Data/Path/"; // путь где хранятся наши файлы
+        public string RecordFileExt = @".path";          // расширение по умолчанию
+        public string MoveFilesPath = @"./Data/Path/";   // путь где хранятся наши файлы
+        public string MoveFileExt = @".path";            // расширение по умолчанию
+        public string MoveFileName = "";                 // расширение по умолчанию
         private float MovingDistance = 0.25f; //0.3f;
         float RangeToCheckPoint = 0.5f; // дистанция до чекпоинта при которой считается , что мы достигли оного
         int MoveTrigerDelay = 1000;     // срабатывание таймера на движение  0,8 сек
@@ -429,6 +429,7 @@ namespace AAEmu.Game.Models.Game.Units.Route
             moveType.Stance = 1;     // COMBAT = 0x0, IDLE = 0x1
             moveType.Alertness = 0;  // IDLE = 0x0, ALERT = 0x1, COMBAT = 0x2
             moveType.Time += 50;     // has to change all the time for normal motion.
+
             if (move)
             {
                 // moving to the point #
@@ -440,7 +441,7 @@ namespace AAEmu.Game.Models.Game.Units.Route
                 OnMove(npc);
             }
         }
-        public void RepeatMove(Simulation sim, Npc npc, float TargetX, float TargetY, float TargetZ, double time = 100)
+        public void RepeatMove(Simulation sim, Npc npc, float TargetX, float TargetY, float TargetZ, double time = 5000)
         {
             //if ((sim ?? this).AbandonTo)
             {
@@ -476,8 +477,9 @@ namespace AAEmu.Game.Models.Game.Units.Route
             moveType.DeltaMovement[1] = 0;
             moveType.DeltaMovement[2] = 0;
             moveType.Stance = 1;     // COMBAT = 0x0, IDLE = 0x1
-            moveType.Alertness = 0;  // IDLE = 0x0, ALERT = 0x1, COMBAT = 0x2
+
             moveType.Time += 50; // has to change all the time for normal motion.
+
             npc.BroadcastPacket(new SCOneUnitMovementPacket(npc.ObjId, moveType), true);
             MoveToPathEnabled = false;
         }
@@ -501,7 +503,9 @@ namespace AAEmu.Game.Models.Game.Units.Route
             moveType.DeltaMovement[2] = 0;
             moveType.Stance = 1;     // COMBAT = 0x0, IDLE = 0x1
             moveType.Alertness = 0;  // IDLE = 0x0, ALERT = 0x1, COMBAT = 0x2
+
             moveType.Time += 50; // has to change all the time for normal motion.
+
             npc.BroadcastPacket(new SCOneUnitMovementPacket(npc.ObjId, moveType), true);
         }
 

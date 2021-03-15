@@ -1,8 +1,6 @@
-using AAEmu.Commons.Network;
-using AAEmu.Commons.Utils;
+﻿using AAEmu.Commons.Network;
 using AAEmu.Game.Models.Game.Char;
 using AAEmu.Game.Utils;
-using Point = AAEmu.Game.Models.Game.World.Point;
 
 namespace AAEmu.Game.Models.Game.Team
 {
@@ -26,6 +24,7 @@ namespace AAEmu.Game.Models.Game.Team
             stream.Write(Character.Level);
             stream.Write((byte)Role);
             stream.WriteBc(Character.ObjId);
+
             return stream;
         }
 
@@ -44,6 +43,7 @@ namespace AAEmu.Game.Models.Game.Team
             stream.Write((byte)Character.Ability2);
             stream.Write((byte)Character.Ability3);
             stream.Write(!Character.IsOnline);
+
             return stream;
         }
     }

@@ -17,7 +17,7 @@ namespace AAEmu.Game.Core.Packets.C2G
         private uint _objId;
         private MoveType _moveType;
         
-        public CSMoveUnitPacket() : base(CSOffsets.CSMoveUnitPacket, 1)
+        public CSMoveUnitPacket() : base(CSOffsets.CSMoveUnitPacket, 5)
         {
         }
 
@@ -50,8 +50,7 @@ namespace AAEmu.Game.Core.Packets.C2G
                     }
                     case VehicleMoveType vmt:
                     {
-                        var (rotDegX, rotDegY, rotDegZ) =
-                            MathUtil.GetSlaveRotationInDegrees(vmt.RotationX, vmt.RotationY, vmt.RotationZ);
+                        var (rotDegX, rotDegY, rotDegZ) = MathUtil.GetSlaveRotationInDegrees(vmt.RotationX, vmt.RotationY, vmt.RotationZ);
                         var (rotX, rotY, rotZ) = MathUtil.GetSlaveRotationFromDegrees(rotDegX, rotDegY, rotDegZ);
 
                         var slave = SlaveManager.Instance.GetActiveSlaveByObjId(_objId);
@@ -109,7 +108,7 @@ namespace AAEmu.Game.Core.Packets.C2G
                     }
                 }
                 
-                mateInfo.BroadcastPacket(new SCUnitMovementsPacket(movements.ToArray()), false);
+                mateInfo.BroadcastPacket(new SCUnitMovementsPacket(movements.ToArray()), true);
             }
             else
             {
@@ -138,7 +137,7 @@ namespace AAEmu.Game.Core.Packets.C2G
                         Connection.ActiveChar.DoFallDamage(mType.FallVel);
                 }
                 
-                Connection.ActiveChar.BroadcastPacket(new SCOneUnitMovementPacket(_objId, _moveType), false);
+                Connection.ActiveChar.BroadcastPacket(new SCOneUnitMovementPacket(_objId, _moveType), true);
             }
         }
 

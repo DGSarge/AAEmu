@@ -2,9 +2,11 @@
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using AAEmu.Commons.Cryptography;
 using AAEmu.Game.Core.Managers;
 using AAEmu.Game.Core.Managers.AAEmu.Game.Core.Managers;
 using AAEmu.Game.Core.Managers.Id;
+using AAEmu.Game.Core.Managers.Stream;
 using AAEmu.Game.Core.Managers.UnitManagers;
 using AAEmu.Game.Core.Managers.World;
 using AAEmu.Game.Core.Network.Game;
@@ -28,6 +30,7 @@ namespace AAEmu.Game
             var stopWatch = new Stopwatch();
 
             stopWatch.Start();
+            #region Id Managers
             TickManager.Instance.Initialize();
             TaskIdManager.Instance.Initialize();
             TaskManager.Instance.Initialize();
@@ -37,7 +40,9 @@ namespace AAEmu.Game
             LocalizationManager.Instance.Load();
             ObjectIdManager.Instance.Initialize();
             TradeIdManager.Instance.Initialize();
+            #endregion
 
+            #region Gameplay Managers
             ItemIdManager.Instance.Initialize();
             DoodadIdManager.Instance.Initialize();
             ChatManager.Instance.Initialize();
@@ -54,6 +59,7 @@ namespace AAEmu.Game
             LaborPowerManager.Instance.Initialize();
             QuestIdManager.Instance.Initialize();
             MailIdManager.Instance.Initialize();
+            UccIdManager.Instance.Initialize();
 
             GameDataManager.Instance.LoadGameData();
             ZoneManager.Instance.Load();
@@ -101,8 +107,17 @@ namespace AAEmu.Game
 
             SpawnManager.Instance.Load();
 
+            SpawnManager.Instance.SpawnAll();
+            HousingManager.Instance.SpawnAll();
+            TransferManager.Instance.SpawnAll();
+            #endregion
+
+
+            #region Other Managers
+            EncryptionManager.Instance.Load();
             AccessLevelManager.Instance.Load();
             CashShopManager.Instance.Load();
+            UccManager.Instance.Load();
             ScriptCompiler.Compile();
 
             TimeManager.Instance.Start();
@@ -115,6 +130,7 @@ namespace AAEmu.Game
             SlaveManager.Instance.Initialize();
             CashShopManager.Instance.Initialize();
             GameDataManager.Instance.PostLoadGameData();
+
 
             await heightmapTask;
             
@@ -130,7 +146,9 @@ namespace AAEmu.Game
             GameNetwork.Instance.Start();
             StreamNetwork.Instance.Start();
             LoginNetwork.Instance.Start();
-            
+
+            #endregion
+
             stopWatch.Stop();
             _log.Info("Server started! Took {0}", stopWatch.Elapsed);
         }

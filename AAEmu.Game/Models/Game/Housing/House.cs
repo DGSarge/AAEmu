@@ -35,7 +35,7 @@ namespace AAEmu.Game.Models.Game.Housing
         private int _currentStep;
         private int _allAction;
         private uint _id;
-        private uint _accountId;
+        private ulong _accountId;
         private uint _coOwnerId;
         private uint _templateId;
         private int _baseAction;
@@ -51,7 +51,7 @@ namespace AAEmu.Game.Models.Game.Housing
         /// </summary>
         public bool IsDirty { get => _isDirty; set => _isDirty = value; }
         public uint Id { get => _id; set { _id = value; _isDirty = true; } }
-        public uint AccountId { get => _accountId; set { _accountId = value; _isDirty = true; } }
+        public ulong AccountId { get => _accountId; set { _accountId = value; _isDirty = true; } }
         public uint CoOwnerId { get => _coOwnerId; set { _coOwnerId = value; _isDirty = true; } }
         //public ushort TlId { get; set; }
         public uint TemplateId { get => _templateId; set { _templateId = value; _isDirty = true; } }
@@ -271,14 +271,13 @@ namespace AAEmu.Game.Models.Game.Housing
             var ownerName = NameManager.Instance.GetCharacterName(OwnerId);
             var sellToPlayerName = NameManager.Instance.GetCharacterName(SellToPlayerId);
 
-            stream.Write(TlId);
-            stream.Write(Id); // dbId
+            stream.Write(TlId); // tl
+            stream.Write(Id);   // dbId
             stream.WriteBc(ObjId);
             stream.Write(TemplateId);
-            stream.WritePisc(ModelId, 0);
-            //stream.Write(ModelId); // ht
-            stream.Write(CoOwnerId); // type(id)
-            stream.Write(OwnerId); // type(id)
+            stream.Write(ModelId);        // ht
+            stream.Write(CoOwnerId);      // type(id)
+            stream.Write(OwnerId);        // type(id)
             stream.Write(ownerName ?? "");
             stream.Write(AccountId);
             stream.Write((byte)Permission);
@@ -290,19 +289,22 @@ namespace AAEmu.Game.Models.Game.Housing
             }
             else
             {
-                stream.Write(AllAction); // allstep
+                stream.Write(AllAction);     // allstep
                 stream.Write(CurrentAction); // curstep
             }
             
-            stream.Write(Template?.Taxation?.Tax ?? 0); // payMoneyAmount
+            //stream.Write(Template?.Taxation?.Tax ?? 0); // payMoneyAmount
+            
             stream.Write(Helpers.ConvertLongX(Position.X));
             stream.Write(Helpers.ConvertLongY(Position.Y));
             stream.Write(Position.Z);
-            stream.Write(Name); // house // TODO max length 128
-            stream.Write(true); // allowRecover
-            stream.Write(SellPrice); // Sale moneyAmount
-            stream.Write(SellToPlayerId); // type(id)
-            stream.Write(sellToPlayerName??""); // sellToName
+
+            stream.Write(Name);                   // house // TODO max length 128
+            stream.Write(true);                   // allowRecover
+            stream.Write(SellPrice);              // Sale moneyAmount
+            stream.Write(SellToPlayerId);         // type(id)
+            stream.Write(sellToPlayerName ?? ""); // sellToName
+
             return stream;
         }
 

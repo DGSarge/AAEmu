@@ -12,6 +12,7 @@ namespace AAEmu.Game.Core.Packets.G2C
         private readonly Unit _killer;
 
         public SCUnitDeathPacket(uint objId, KillReason killReason, Unit killer = null) : base(SCOffsets.SCUnitDeathPacket, 1)
+
         {
             _objId = objId;
             _killReason = killReason;

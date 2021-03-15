@@ -7,7 +7,7 @@ namespace AAEmu.Game.Core.Packets.G2C
     {
         private readonly ushort _tlId;
         
-        public SCSkillEndedPacket(ushort tlId) : base(SCOffsets.SCSkillEndedPacket, 1)
+        public SCSkillEndedPacket(ushort tlId) : base(SCOffsets.SCSkillEndedPacket, 5)
         {
             _tlId = tlId;
         }
@@ -15,6 +15,7 @@ namespace AAEmu.Game.Core.Packets.G2C
         public override PacketStream Write(PacketStream stream)
         {
             stream.Write(_tlId);
+
             return stream;
         }
     }
