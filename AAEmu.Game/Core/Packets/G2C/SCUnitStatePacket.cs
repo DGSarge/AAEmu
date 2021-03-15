@@ -57,7 +57,7 @@ namespace AAEmu.Game.Core.Packets.G2C
                     _baseUnitType = BaseUnitType.Transfer;
                     _modelPostureType = ModelPostureType.TurretState;
                     break;
-                case Mount _:
+                case Mate _:
                     _baseUnitType = BaseUnitType.Mate;
                     _modelPostureType = ModelPostureType.None;
                     break;
@@ -109,7 +109,7 @@ namespace AAEmu.Game.Core.Packets.G2C
                     stream.Write(transfer.TemplateId); // transfer templateId
                     break;
                 case BaseUnitType.Mate:
-                    var mount = (Mount)_unit;
+                    var mount = (Mate)_unit;
                     stream.Write(mount.TlId); // tl
                     stream.Write(mount.TemplateId); // npc teplateId
                     stream.Write(mount.OwnerId); // characterId (masterId)
@@ -597,8 +597,12 @@ namespace AAEmu.Game.Core.Packets.G2C
                     flags.Set(13);
                 }
 
-                stream.WritePisc(0, 0, 0); // очки чести полученные в PvP, кол-во убийств в PvP, third value added in 2.0
+
+                stream.WritePisc(character.HonorGainedInCombat, character.HostileFactionKills, 0// очки чести полученные в PvP, кол-во убийств в PvP
+
+              //stream.WritePisc(0, 0, 0); // очки чести полученные в PvP, кол-во убийств в PvP, third value added in 2.0
                 stream.Write(0u); // periodLeadership, added in 1.8
+
                 stream.Write(flags.ToByteArray()); // flags(ushort)
                 /*
                  * 0x01 - 8bit - режим боя

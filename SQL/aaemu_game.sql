@@ -244,9 +244,13 @@ CREATE TABLE `characters`  (
   `vocation_point` int(11) NOT NULL,
   `crime_point` int(11) NOT NULL,
   `crime_record` int(11) NOT NULL,
-  `delete_request_time` datetime(0) NOT NULL DEFAULT '0001-01-01 00:00:00',
-  `transfer_request_time` datetime(0) NOT NULL DEFAULT '0001-01-01 00:00:00',
-  `delete_time` datetime(0) NOT NULL DEFAULT '0001-01-01 00:00:00',
+
+  `pvp_honor` int(11) NOT NULL DEFAULT 0,
+  `hostile_faction_kills` int(11) NOT NULL DEFAULT 0,
+  `delete_request_time` datetime NOT NULL DEFAULT '0001-01-01 00:00:00',
+  `transfer_request_time` datetime NOT NULL DEFAULT '0001-01-01 00:00:00',
+  `delete_time` datetime NOT NULL DEFAULT '0001-01-01 00:00:00',
+
   `bm_point` int(11) NOT NULL,
   `auto_use_aapoint` tinyint(1) NOT NULL,
   `prev_point` int(11) NOT NULL,
@@ -610,4 +614,60 @@ CREATE TABLE `uccs`  (
 -- Records of uccs
 -- ----------------------------
 
-SET FOREIGN_KEY_CHECKS = 1;
+DROP TABLE IF EXISTS `auction_house`;
+CREATE TABLE `auction_house` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `duration` tinyint NOT NULL,
+  `item_id` int NOT NULL,
+  `object_id` int NOT NULL,
+  `grade` tinyint(1) NOT NULL,
+  `flags` tinyint(1) NOT NULL,
+  `stack_size` int NOT NULL,
+  `detail_type` tinyint(1) NOT NULL,
+  `creation_time` datetime NOT NULL,
+  `end_time` datetime NOT NULL,
+  `lifespan_mins` int NOT NULL,
+  `type_1` int NOT NULL,
+  `world_id` tinyint NOT NULL,
+  `unsecure_date_time` varchar(45) NOT NULL,
+  `unpack_date_time` varchar(45) NOT NULL,
+  `world_id_2` tinyint NOT NULL,
+  `client_id` int NOT NULL,
+  `client_name` varchar(45) NOT NULL,
+  `start_money` int NOT NULL,
+  `direct_money` int NOT NULL,
+  `bid_world_id` tinyint(1) NOT NULL,
+  `bidder_id` int NOT NULL,
+  `bidder_name` varchar(45) NOT NULL,
+  `bid_money` int NOT NULL,
+  `extra` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+DROP TABLE IF EXISTS `accounts`;
+CREATE TABLE `accounts` (
+  `account_id` INT NOT NULL,
+  `credits` INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (`account_id`)
+)  ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+DROP TABLE IF EXISTS `aaemu_game`.`doodads`;
+CREATE TABLE `aaemu_game`.`doodads` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `owner_id` int,
+  `owner_type` tinyint(4) unsigned DEFAULT 255,
+  `template_id` int NOT NULL,
+  `current_phase_id` int NOT NULL,
+  `plant_time` datetime NOT NULL,
+  `growth_time` datetime NOT NULL,
+  `phase_time` datetime NOT NULL,
+  `x` float NOT NULL,
+  `y` float NOT NULL,
+  `z` float NOT NULL,
+  `rotation_x` tinyint(4) NOT NULL,
+  `rotation_y` tinyint(4) NOT NULL,
+  `rotation_z` tinyint(4) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
